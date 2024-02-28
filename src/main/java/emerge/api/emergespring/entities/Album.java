@@ -1,6 +1,10 @@
 package emerge.api.emergespring.entities;
 
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Album {
@@ -26,9 +31,11 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "artista_id")
+    @JsonIgnore
     private Artista artista;
 
-
+    @OneToMany(mappedBy = "album")
+    private List<Canciones> canciones;
 
     public Long getId() {
         return id;
