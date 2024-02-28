@@ -1,110 +1,57 @@
-package emerge.api.emergespring.entities;
+package emerge.api.emergespring.DTOs;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
-@Entity
-public class Album {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AlbumDto {
+    
     private Long id;
-
-    @Column
     private String titulo;
     private String img;
     private String fecha;
     private String descripcion;
-
-
-
-    @ManyToOne
-    @JoinColumn(name = "artista_id")
-    private Artista artista;
-
-
-
+    private String artista;
     public Long getId() {
         return id;
     }
-
-
-
     public void setId(Long id) {
         this.id = id;
     }
-
-
-
     public String getTitulo() {
         return titulo;
     }
-
-
-
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
-
-
     public String getImg() {
         return img;
     }
-
-
-
     public void setImg(String img) {
         this.img = img;
     }
-
-
-
     public String getFecha() {
         return fecha;
     }
-
-
-
-    @Override
-    public String toString() {
-        return "Album [id=" + id + ", titulo=" + titulo + ", img=" + img + ", fecha=" + fecha + ", descripcion="
-                + descripcion + ", artista=" + artista + "]";
-    }
-
-
-
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
-
-
-
     public String getDescripcion() {
         return descripcion;
     }
-
-
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-
-
-    public Artista getArtista() {
+    public String getArtista() {
         return artista;
     }
-
-
-
-    public void setArtista(Artista artista) {
+    public void setArtista(String artista) {
+        this.artista = artista;
+    }
+    public AlbumDto(Long id, String titulo, String img, String fecha, String descripcion, String artista) {
+        this.id = id;
+        this.titulo = titulo;
+        this.img = img;
+        this.fecha = fecha;
+        this.descripcion = descripcion;
         this.artista = artista;
     }
 
