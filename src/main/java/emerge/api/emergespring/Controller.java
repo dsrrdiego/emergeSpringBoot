@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import emerge.api.emergespring.DTOs.AlbumDto;
 import emerge.api.emergespring.DTOs.CancionDto;
@@ -26,6 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +36,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class Controller {
     @Autowired
     private AlbumRepo albumRepo;
@@ -94,5 +99,37 @@ public class Controller {
         // ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(audio);
         return new ResponseEntity<>(audio, HttpStatus.OK);
     }
+
+    @PostMapping("/subir")
+    public ResponseEntity<String> subir(@RequestParam("files") List<MultipartFile> files) {
+        if (files.isEmpty()) {
+            return new ResponseEntity<>("Archivos no seleccionados", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            for (MultipartFile file : files) {
+                if (file.isEmpty()) {
+                    return new ResponseEntity<>("Uno o más archivos están vacíos", HttpStatus.BAD_REQUEST);
+                }
+
+                // Guardar el archivo en el sistema de archivos
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get("src/main/resources/nuevos/"+file.getOriginalFilename());
+                Files.write(path, bytes);
+
+                // Guardar el archivo en la base de datos
+                // Audio audio = new Audio();
+                // audio.setNombre(file.getOriginalFilename());
+                // audio.setBytes(bytes);
+                // audioRepository.save(audio);
+            }
+
+            return new ResponseEntity<>("Archivos subidos correctamente", HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error al subir los archivos", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }
