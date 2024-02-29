@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 // import javax.persistence.*;
 // import java.util.List;
@@ -24,6 +25,7 @@ public class Artista {
     private String nombre;
 
     @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Album> albums;
 
     public Long getId() {

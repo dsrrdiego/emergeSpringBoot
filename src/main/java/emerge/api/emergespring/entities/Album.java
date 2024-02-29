@@ -36,7 +36,7 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "artista_id")
-    @JsonIgnore
+    // @JsonIgnore
     private Artista artista;
 
     @OneToMany(mappedBy = "album")
