@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -45,69 +46,52 @@ public class Controller {
     @Autowired
     private CancionesRepo cancionesRepo;
 
-    @GetMapping("/hola")
-    public String hola(){
-        return "hola";
-    }
-
+    
     @GetMapping("/artista")
     public List<Artista> artista(){
         return this.artistaRepo.findAll();
     }
 
-    // @GetMapping("/album")
-    // public ResponseEntity<List<Album>> album(){
-    //     List<Album> x = this.albumRepo.findAll();
-    //     List<AlbumDto> x2 = this.albumRepo.dameAlbums();
-    //     System.out.println("anda!!!!!!!!!!!!!!!!!!!!!!");
-    //     System.out.println(x2);
-    //     return new ResponseEntity<>(x,HttpStatus.OK);
-    // }
     @GetMapping("/album")
     public ResponseEntity<List<AlbumDto>> album(){
         List<AlbumDto> x = this.albumRepo.dameAlbums();
         return new ResponseEntity<>(x,HttpStatus.OK);
     }
 
-    @GetMapping(value="/dameImagen/{img}", produces =MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> dameImagen(@PathVariable String img) throws IOException{
-        Resource resource = new ClassPathResource("imagenes/" + img);
+    @GetMapping("/albumXArtista/{titulo}")
+    public ResponseEntity<List<Album>> albumId(@PathVariable String titulo){
+        List<Album> a = albumRepo.albumId(titulo);
+        System.out.println(a);
+        return new ResponseEntity<>(a,HttpStatus.OK);
+    }
+
+    @GetMapping(value="/dameImagen/{artista}/{album}/{img}", produces =MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> dameImagen(@PathVariable String img,@PathVariable String artista, @PathVariable String album) throws IOException{
+        System.out.println(artista+album+img);
+        Resource resource = new ClassPathResource("emerge/"+artista+"/"+album+"/" + img);
         byte[] imagen = Files.readAllBytes(Path.of(resource.getURI()));
-        // return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imagen);
         return new ResponseEntity<byte[]>(imagen,HttpStatus.OK);
     }
+    
 
     @GetMapping("/canciones/{albumId}")
     public ResponseEntity<List<Canciones>> canciones(@PathVariable Long albumId){
         List<Canciones> x = cancionesRepo.porId(albumId);
-        System.out.println(x);
         return new ResponseEntity<List<Canciones>>(x,HttpStatus.OK);
-        // List<CancionDto> x = this.cancionesRepo.dameCanciones(albumId);
-        // return new ResponseEntity<>(x,HttpStatus.OK);
-
     }
-    // @GetMapping("/canciones/{albumId}")
-    // public ResponseEntity<List<CancionDto>> canciones(@PathVariable Long albumId){
-    //     List<CancionDto> x = this.cancionesRepo.dameCanciones(albumId);
-    //     return new ResponseEntity<>(x,HttpStatus.OK);
-    // }
+    
 
-    @GetMapping(value="/dameCancion" ,produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> obtenerAudio() throws IOException {
-        Resource resource = new ClassPathResource("audio/Sencillamente.mp3");
+    @GetMapping(value="/dameCancion/{artista}/{album}/{cancion}" ,produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> obtenerAudio(
+        @PathVariable("artista") String artista,
+        @PathVariable("album") String album,
+        @PathVariable("cancion") String cancion ) throws IOException {
+        Resource resource = new ClassPathResource("emerge"+"/"+artista+"/"+album+"/"+cancion+".mp3");
         byte[] audio = Files.readAllBytes(Path.of(resource.getURI()));
         // return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(audio);
         return new ResponseEntity<>(audio, HttpStatus.OK);
     }
-
-    // @GetMapping(value="/dameC",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    // public ResponseEntity<Resource> obtenerAudio2() throws IOException {
-    //     Resource resource = new FileSystemResource("/sencillamente.mp3");
-    //     return new ResponseEntity<>(resource, HttpStatus.OK);
-
-    //     // return new ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(resource);
-    //     // return null;
-    // }
+  
 
     
 }
