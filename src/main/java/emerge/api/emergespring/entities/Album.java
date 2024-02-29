@@ -1,6 +1,7 @@
 package emerge.api.emergespring.entities;
 
 
+import java.sql.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 public class Album {
@@ -24,7 +27,9 @@ public class Album {
     @Column
     private String titulo;
     private String img;
-    private String fecha;
+    
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
     private String descripcion;
 
 
@@ -73,7 +78,7 @@ public class Album {
 
 
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
@@ -87,7 +92,7 @@ public class Album {
 
 
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

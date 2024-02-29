@@ -1,13 +1,13 @@
 package emerge.api.emergespring.DTOs;
 
-
+import java.sql.Date;
 
 public class AlbumDto {
     
     private Long id;
     private String titulo;
     private String img;
-    private String fecha;
+    private Date fecha;
     private String descripcion;
     private String artista;
     public Long getId() {
@@ -28,10 +28,10 @@ public class AlbumDto {
     public void setImg(String img) {
         this.img = img;
     }
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
     public String getDescripcion() {
@@ -46,7 +46,7 @@ public class AlbumDto {
     public void setArtista(String artista) {
         this.artista = artista;
     }
-    public AlbumDto(Long id, String titulo, String img, String fecha, String descripcion, String artista) {
+    public AlbumDto(Long id, String titulo, String img, Date fecha, String descripcion, String artista) {
         this.id = id;
         this.titulo = titulo;
         this.img = img;
