@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
 
 @RestController
 @CrossOrigin(origins = "http://127.0.0.1:5500")
@@ -100,9 +101,15 @@ public class Controller {
         return new ResponseEntity<>(audio, HttpStatus.OK);
     }
 
-    @PostMapping("/subir")
-    public ResponseEntity<String> subir(@RequestParam("files") List<MultipartFile> files) {
-        if (files.isEmpty()) {
+    @PostMapping("/subir/{artista}/{album}/{fecha}/{descripcion}")
+    public ResponseEntity<String> subir(
+        @PathVariable String artista,
+        @PathVariable String album,
+        @PathVariable Date fecha,
+        @PathVariable String descripcion,
+        @RequestParam("files") List<MultipartFile> files) {
+        System.out.println(artista+album+fecha+descripcion);
+            if (files.isEmpty()) {
             return new ResponseEntity<>("Archivos no seleccionados", HttpStatus.BAD_REQUEST);
         }
 
