@@ -130,5 +130,10 @@ public class Album {
         this.artista = artista;
     }
 
+
+
+    public Album() {
+    }
+
     
 }

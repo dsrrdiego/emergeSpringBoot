@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,7 +79,7 @@ public class Controller {
     public ResponseEntity<byte[]> dameImagen(@PathVariable String img, @PathVariable String artista,
             @PathVariable String album) throws IOException {
         System.out.println(artista + album + img);
-        Resource resource = new ClassPathResource("emerge/" + artista + "/" + album + "/" + img);
+        Resource resource = new ClassPathResource("emergeBD/" + artista + "/" + album + "/" + img);
         byte[] imagen = Files.readAllBytes(Path.of(resource.getURI()));
         return new ResponseEntity<byte[]>(imagen, HttpStatus.OK);
     }
@@ -94,7 +95,12 @@ public class Controller {
             @PathVariable("artista") String artista,
             @PathVariable("album") String album,
             @PathVariable("cancion") String cancion) throws IOException {
-        Resource resource = new ClassPathResource("emerge" + "/" + artista + "/" + album + "/" + cancion + ".mp3");
+     
+        
+        Resource resource = new ClassPathResource("emergeBD" + "/" +artista + "/" + 
+        album + "/" + 
+        cancion) ;
+
         byte[] audio = Files.readAllBytes(Path.of(resource.getURI()));
         // return
         // ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(audio);
@@ -117,7 +123,11 @@ public class Controller {
         albumRepo.save(al);
 
         for (MultipartFile cancion : files) {
+            // String archivo=cancion.getOriginalFilename();
+            // String nombre=archivo.substring(0,archivo.lastIndexOf('.'));
+            // System.out.println(nombre+"\n\n*******************");
             Canciones c=new Canciones(cancion.getOriginalFilename(),al);
+            
             cancionesRepo.save(c);
         }
         
@@ -136,7 +146,7 @@ public class Controller {
 
                 // Guardar el archivo en el sistema de archivos
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get("src/main/resources/nuevos/" +artista+"/"+album+"/"+ file.getOriginalFilename());
+                Path path = Paths.get("src/main/resources/emergeBD/" +artista+"/"+album+"/"+ file.getOriginalFilename());
                 Files.write(path, bytes);
 
                 // Guardar el archivo en la base de datos
@@ -151,7 +161,7 @@ public class Controller {
 
             // Guardar el archivo en el sistema de archivos
             byte[] bytes = img.getBytes();
-            Path path = Paths.get("src/main/resources/nuevos/" +artista+"/"+album+"/"+ img.getOriginalFilename());
+            Path path = Paths.get("src/main/resources/emergeBD/" +artista+"/"+album+"/"+ img.getOriginalFilename());
             Files.write(path, bytes);
 
             return new ResponseEntity<>("Archivos subidos correctamente", HttpStatus.OK);
@@ -163,12 +173,12 @@ public class Controller {
 
     private void crearCarpeta(String carpeta) {
         try {
-            Path path = Paths.get("src/main/resources/nuevos/" + carpeta);
+            Path path = Paths.get("src/main/resources/emergeBD/" + carpeta);
             Files.createDirectory(path);
 
         } catch (IOException e) {
             // e.printStackTrace();
-            // System.out.println("Error al crear la carpeta");
+            System.out.println("**************************\n\n\nError al crear la carpeta");
         }
     }
 

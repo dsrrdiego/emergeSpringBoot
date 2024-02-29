@@ -56,5 +56,8 @@ public class Artista {
         this.nombre = nombre;
     }
 
+    public Artista() {
+    }
+
     
 }
