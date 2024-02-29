@@ -107,7 +107,8 @@ public class Controller {
             @PathVariable String album,
             @PathVariable Date fecha,
             @PathVariable String descripcion,
-            @RequestParam("files") List<MultipartFile> files) {
+            @RequestParam("files") List<MultipartFile> files,
+            @RequestParam("img") MultipartFile img) {
         System.out.println(artista + album + fecha + descripcion);
         
         crearCarpeta(artista);
@@ -134,6 +135,14 @@ public class Controller {
                 // audio.setBytes(bytes);
                 // audioRepository.save(audio);
             }
+            if (img.isEmpty()) {
+                return new ResponseEntity<>("Uno o más archivos están vacíos", HttpStatus.BAD_REQUEST);
+            }
+
+            // Guardar el archivo en el sistema de archivos
+            byte[] bytes = img.getBytes();
+            Path path = Paths.get("src/main/resources/nuevos/" +artista+"/"+album+"/"+ img.getOriginalFilename());
+            Files.write(path, bytes);
 
             return new ResponseEntity<>("Archivos subidos correctamente", HttpStatus.OK);
         } catch (IOException e) {
