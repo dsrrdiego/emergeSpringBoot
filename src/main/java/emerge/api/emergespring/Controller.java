@@ -103,13 +103,17 @@ public class Controller {
 
     @PostMapping("/subir/{artista}/{album}/{fecha}/{descripcion}")
     public ResponseEntity<String> subir(
-        @PathVariable String artista,
-        @PathVariable String album,
-        @PathVariable Date fecha,
-        @PathVariable String descripcion,
-        @RequestParam("files") List<MultipartFile> files) {
-        System.out.println(artista+album+fecha+descripcion);
-            if (files.isEmpty()) {
+            @PathVariable String artista,
+            @PathVariable String album,
+            @PathVariable Date fecha,
+            @PathVariable String descripcion,
+            @RequestParam("files") List<MultipartFile> files) {
+        System.out.println(artista + album + fecha + descripcion);
+        
+        crearCarpeta(artista);
+        crearCarpeta(artista+"/"+album);
+
+        if (files.isEmpty()) {
             return new ResponseEntity<>("Archivos no seleccionados", HttpStatus.BAD_REQUEST);
         }
 
@@ -121,7 +125,7 @@ public class Controller {
 
                 // Guardar el archivo en el sistema de archivos
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get("src/main/resources/nuevos/"+file.getOriginalFilename());
+                Path path = Paths.get("src/main/resources/nuevos/" +artista+"/"+album+"/"+ file.getOriginalFilename());
                 Files.write(path, bytes);
 
                 // Guardar el archivo en la base de datos
@@ -138,5 +142,15 @@ public class Controller {
         }
     }
 
+    private void crearCarpeta(String carpeta) {
+        try {
+            Path path = Paths.get("src/main/resources/nuevos/" + carpeta);
+            Files.createDirectory(path);
+
+        } catch (IOException e) {
+            // e.printStackTrace();
+            // System.out.println("Error al crear la carpeta");
+        }
+    }
 
 }
