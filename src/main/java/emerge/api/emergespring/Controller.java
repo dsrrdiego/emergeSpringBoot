@@ -109,7 +109,17 @@ public class Controller {
             @PathVariable String descripcion,
             @RequestParam("files") List<MultipartFile> files,
             @RequestParam("img") MultipartFile img) {
-        System.out.println(artista + album + fecha + descripcion);
+
+        Artista a=new Artista(artista);
+        artistaRepo.save(a);
+
+        Album al=new Album(album, img.getOriginalFilename(), fecha, descripcion, a);
+        albumRepo.save(al);
+
+        for (MultipartFile cancion : files) {
+            Canciones c=new Canciones(cancion.getOriginalFilename(),al);
+            cancionesRepo.save(c);
+        }
         
         crearCarpeta(artista);
         crearCarpeta(artista+"/"+album);

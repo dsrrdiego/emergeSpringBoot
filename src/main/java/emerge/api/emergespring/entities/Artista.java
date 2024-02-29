@@ -52,5 +52,9 @@ public class Artista {
         this.albums = albums;
     }
 
+    public Artista(String nombre) {
+        this.nombre = nombre;
+    }
+
     
 }

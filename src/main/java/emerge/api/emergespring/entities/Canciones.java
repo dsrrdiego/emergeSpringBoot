@@ -63,6 +63,11 @@ public class Canciones {
         return "\nCanciones [id=" + id + ", titulo=" + titulo + ", album=" + album + "]";
     }
 
+    public Canciones(String titulo, Album album) {
+        this.titulo = titulo;
+        this.album = album;
+    }
+
     
     
 }

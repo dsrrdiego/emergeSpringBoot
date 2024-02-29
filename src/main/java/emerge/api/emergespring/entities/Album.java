@@ -120,5 +120,15 @@ public class Album {
         this.artista = artista;
     }
 
+
+
+    public Album(String titulo, String img, Date fecha, String descripcion, Artista artista) {
+        this.titulo = titulo;
+        this.img = img;
+        this.fecha = fecha;
+        this.descripcion = descripcion;
+        this.artista = artista;
+    }
+
     
 }
