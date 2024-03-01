@@ -115,23 +115,23 @@ public class Controller {
             @PathVariable String descripcion,
             @RequestParam("files") List<MultipartFile> files,
             @RequestParam("img") MultipartFile img) {
-
-        Artista a=new Artista(artista);
-        artistaRepo.save(a);
-
-        Album al=new Album(album, img.getOriginalFilename(), fecha, descripcion, a);
-        albumRepo.save(al);
-
-        for (MultipartFile cancion : files) {
-            // String archivo=cancion.getOriginalFilename();
-            // String nombre=archivo.substring(0,archivo.lastIndexOf('.'));
-            // System.out.println(nombre+"\n\n*******************");
-            Canciones c=new Canciones(cancion.getOriginalFilename(),al);
-            
-            cancionesRepo.save(c);
-        }
         
-        crearCarpeta(artista);
+        // boolean artistaRepetidoFlag=false;
+        Artista art=artistaRepo.dameArtistaNombre(artista);
+        if (art==null) {
+            crearCarpeta(artista);
+        }
+
+        if (albumRepo.existe(album)){
+            System.out.println("album repetido");
+             return null;}
+        // else{
+        //     artistaRepetidoFlag=true;
+
+        // }
+
+
+        
         crearCarpeta(artista+"/"+album);
 
         if (files.isEmpty()) {
@@ -163,7 +163,19 @@ public class Controller {
             byte[] bytes = img.getBytes();
             Path path = Paths.get("src/main/resources/emergeBD/" +artista+"/"+album+"/"+ img.getOriginalFilename());
             Files.write(path, bytes);
-
+            
+            if (art==null){
+            art=new Artista(artista);
+            artistaRepo.save(art);
+            }
+    
+            Album al=new Album(album, img.getOriginalFilename(), fecha, descripcion, art);
+            albumRepo.save(al);
+    
+            for (MultipartFile cancion : files) {
+                Canciones c=new Canciones(cancion.getOriginalFilename(),al);
+                cancionesRepo.save(c);
+            }
             return new ResponseEntity<>("Archivos subidos correctamente", HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();

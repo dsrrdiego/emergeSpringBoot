@@ -20,5 +20,8 @@ public interface AlbumRepo extends JpaRepository<Album,Long>{
  
     @Query("SELECT a FROM Album a WHERE a.titulo=:nombre")
     public Album xTitulo(@Param("nombre") String titulo);
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Album a WHERE a.titulo = :titulo")
+    boolean existe(@Param("titulo") String album);
     
 }
