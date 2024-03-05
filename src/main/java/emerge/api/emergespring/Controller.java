@@ -5,15 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import emerge.api.emergespring.DTOs.AlbumDto;
-import emerge.api.emergespring.DTOs.CancionDto;
 import emerge.api.emergespring.Repos.AlbumRepo;
 import emerge.api.emergespring.Repos.ArtistaRepo;
 import emerge.api.emergespring.Repos.CancionesRepo;
@@ -21,31 +18,22 @@ import emerge.api.emergespring.entities.Album;
 import emerge.api.emergespring.entities.Artista;
 import emerge.api.emergespring.entities.Canciones;
 import io.swagger.v3.oas.annotations.Operation;
-// import io.swagger.v3.oas.annotations.Operation;
-// import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 
 @RestController
-// @CrossOrigin(origins = "http://127.0.0.1:5500")
 @Tag(name = "Controlador general de la API", description = "Encargado de todo lo referente a subir y bajar Albums de audio")
 
 public class Controller {
@@ -63,6 +51,7 @@ public class Controller {
     public List<Artista> artista() {
         return this.artistaRepo.findAll();
     }
+    
     @Operation(summary = "Albums", description = "Devuelve una lista DTO completa de los Albums subidos no incluyeno el artista sino solo su nombre")
     @GetMapping("/album")
     public ResponseEntity<List<AlbumDto>> album() {
@@ -140,10 +129,6 @@ public class Controller {
             System.out.println("album repetido");
             return null;
         }
-        // else{
-        // artistaRepetidoFlag=true;
-
-        // }
 
         crearCarpeta(artista + "/" + album);
 
@@ -163,11 +148,6 @@ public class Controller {
                         .get("src/main/resources/emergeBD/" + artista + "/" + album + "/" + file.getOriginalFilename());
                 Files.write(path, bytes);
 
-                // Guardar el archivo en la base de datos
-                // Audio audio = new Audio();
-                // audio.setNombre(file.getOriginalFilename());
-                // audio.setBytes(bytes);
-                // audioRepository.save(audio);
             }
             if (img.isEmpty()) {
                 return new ResponseEntity<>("Uno o más archivos están vacíos", HttpStatus.BAD_REQUEST);
@@ -199,13 +179,20 @@ public class Controller {
     }
 
     private void crearCarpeta(String carpeta) {
+        Path currentDir = Paths.get("");
+        
+        // Mostrar el directorio actual por consola
+        System.out.println("Directorio actual: " + currentDir.toAbsolutePath());
         try {
-            Path path = Paths.get("src/main/resources/emergeBD/" + carpeta);
+            Path path = Paths.get("src/main/resources/emergeBD/" , carpeta);
             Files.createDirectory(path);
+            System.out.println("creado");
 
         } catch (IOException e) {
             // e.printStackTrace();
             System.out.println("**************************\n\n\nError al crear la carpeta");
+            System.out.println(e);
+            System.out.println(carpeta);
         }
     }
 
