@@ -16,7 +16,7 @@ public interface AlbumRepo extends JpaRepository<Album,Long>{
     List<AlbumDto> dameAlbums();
 
     @Query("SELECT a FROM Album a WHERE a.artista.nombre=:nombre")
-    public List<Album> albumId(@Param("nombre") String titulo);
+    public List<Album> albumNombre(@Param("nombre") String titulo);
  
     @Query("SELECT a FROM Album a WHERE a.titulo=:nombre")
     public Album xTitulo(@Param("nombre") String titulo);
