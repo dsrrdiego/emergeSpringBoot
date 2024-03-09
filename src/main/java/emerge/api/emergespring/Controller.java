@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +52,7 @@ public class Controller {
     public List<Artista> artista() {
         return this.artistaRepo.findAll();
     }
-    
+
     @Operation(summary = "Albums", description = "Devuelve una lista DTO completa de los Albums subidos no incluyeno el artista sino solo su nombre")
     @GetMapping("/album")
     public ResponseEntity<List<AlbumDto>> album() {
@@ -73,15 +74,20 @@ public class Controller {
         return new ResponseEntity<>(x, HttpStatus.OK);
     }
 
-
     @Operation(summary = "Imagen de la tapa del Album", description = "Devuelve una imagen pasandole por GET la direccion correcta, esto es nombre de artista/ titulo del album ")
     @GetMapping(value = "/dameImagen/{artista}/{album}/{img}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public ResponseEntity<byte[]> dameImagen(@PathVariable String img, @PathVariable String artista,
+    public ResponseEntity<Resource> dameImagen(@PathVariable String img, @PathVariable String artista,
             @PathVariable String album) throws IOException {
-        System.out.println(artista + album + img);
-        Resource resource = new ClassPathResource("emergeBD/" + artista + "/" + album + "/" + img);
-        byte[] imagen = Files.readAllBytes(Path.of(resource.getURI()));
-        return new ResponseEntity<byte[]>(imagen, HttpStatus.OK);
+        // System.out.println(artista + album + img);
+        // Resource resource = new ClassPathResource("emergeBD/" + artista + "/" + album
+        // + "/" + img);
+        // byte[] imagen = Files.readAllBytes(Path.of(resource.getURI()));
+        String currentDirectory = System.getProperty("user.dir");
+        Path ruta = Paths.get(currentDirectory + "/src/main/resources/emergeBD/" + artista + "/" + album).resolve(img);
+        System.out.println("\n\nLa carpeta actual es: " + ruta + "\n\n");
+        Resource recurso = new UrlResource(ruta.toUri());
+
+        return new ResponseEntity<>(recurso, HttpStatus.OK);
     }
 
     @Operation(summary = "Lista de Canciones", description = "Devuelve una lista de canciones de tal id de album ")
@@ -93,19 +99,33 @@ public class Controller {
 
     @Operation(summary = "Audio de la cancion", description = "Devuelve el audio MP3 de tal cancion pasandole por GET la direccion correcta, esto es nombre de artista/ titulo del album ")
     @GetMapping(value = "/dameCancion/{artista}/{album}/{cancion}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> obtenerAudio(
+    public ResponseEntity<Resource> obtenerAudio(
             @PathVariable("artista") String artista,
             @PathVariable("album") String album,
             @PathVariable("cancion") String cancion) throws IOException {
+        String currentDirectory = System.getProperty("user.dir");
+        Path ruta = Paths.get(currentDirectory + "/src/main/resources/emergeBD/" + artista + "/" + album)
+                .resolve(cancion);
+        System.out.println("\n\nLa carpeta actual es: " + ruta + "\n\n");
+        Resource recurso = new UrlResource(ruta.toUri());
 
-        Resource resource = new ClassPathResource("emergeBD" + "/" + artista + "/" +
-                album + "/" +
-                cancion);
+        return new ResponseEntity<>(recurso, HttpStatus.OK);
+        // Resource resource = new ClassPathResource("emergeBD" + "/" + artista + "/" +
+        // album + "/" +
+        // cancion);
 
-        byte[] audio = Files.readAllBytes(Path.of(resource.getURI()));
-        // return
+        // byte[] audio = Files.readAllBytes(Path.of(resource.getURI()));
+        // // return
+        // //
         // ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM).body(audio);
-        return new ResponseEntity<>(audio, HttpStatus.OK);
+        // String currentDirectory = System.getProperty("user.dir");
+        // Path ruta =
+        // Paths.get(currentDirectory+"/src/main/resources/emergeBD/"+artista+"/"+album).resolve(img);
+        // System.out.println("\n\nLa carpeta actual es: " + ruta + "\n\n");
+        // Resource recurso = new UrlResource(ruta.toUri());
+
+        // return new ResponseEntity<>(recurso, HttpStatus.OK);
+        // return new ResponseEntity<>(audio, HttpStatus.OK);
     }
 
     @Operation(summary = "Subir una Album", description = "Aqui se suben audios, imagen y titulos pasandole por GET la direccion correcta, esto es nombre de artista/ titulo del album y por POST la imagen y los audios mp3")
@@ -180,11 +200,11 @@ public class Controller {
 
     private void crearCarpeta(String carpeta) {
         Path currentDir = Paths.get("");
-        
+
         // Mostrar el directorio actual por consola
         System.out.println("Directorio actual: " + currentDir.toAbsolutePath());
         try {
-            Path path = Paths.get("src/main/resources/emergeBD/" , carpeta);
+            Path path = Paths.get("src/main/resources/emergeBD/", carpeta);
             Files.createDirectory(path);
             System.out.println("creado");
 
