@@ -4,9 +4,9 @@ FROM openjdk:17-jdk-slim
 # Establece el directorio de trabajo en /app
 WORKDIR /app
 
-COPY src/ /app
+COPY emergeSpringBoot/ /app
 # Copia el archivo JAR de tu aplicación en el contenedor
-COPY target/emergespring-0.0.1-SNAPSHOT.jar dock.jar
+COPY emergeSpringBoot/target/emergespring-0.0.1-SNAPSHOT.jar dock.jar
 # Expone el puerto 8080 para que la aplicación esté disponible desde fuera del contenedor
 EXPOSE 8080
 
