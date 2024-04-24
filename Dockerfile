@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 COPY target/emergespring-0.0.1-SNAPSHOT.jar dock.jar
-COPY . /app
+#COPY . /app
 # Copia el archivo JAR de tu aplicación en el contenedor
 # Expone el puerto 8080 para que la aplicación esté disponible desde fuera del contenedor
 EXPOSE 8080
