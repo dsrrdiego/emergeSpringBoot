@@ -35,12 +35,12 @@ public class EmergespringApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-				.allowedOrigins("*")
-				.allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("Content-Type", "Authorization")
-                .exposedHeaders("Authorization")
-                .allowCredentials(true)
-                .maxAge(3600);
+				.allowedOrigins("*");
+				// .allowedMethods("GET", "POST", "PUT", "DELETE")
+                // .allowedHeaders("Content-Type", "Authorization")
+                // .exposedHeaders("Authorization")
+                // .allowCredentials(true)
+                // .maxAge(3600);
 			}
 		};
 	}
