@@ -1,0 +1,10 @@
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/DTOs/AlbumDto.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/Repos/CancionesRepo.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/Repos/ArtistaRepo.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/entities/Album.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/entities/Canciones.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/Controller.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/EmergespringApplication.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/Repos/AlbumRepo.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/DTOs/CancionDto.java
+/home/diego/++/emergeSpringBoot/src/main/java/emerge/api/emergespring/entities/Artista.java
