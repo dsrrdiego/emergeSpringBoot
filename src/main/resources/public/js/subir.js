@@ -82,8 +82,7 @@ class Subir {
                     encodeURIComponent(inputs[3].value);
                 console.log(miUri);
 
-                // fetch(direccionApi + "/subir/" + miUri, {
-                fetch('https://emergespringboot.onrender.com' + "/subir/" + miUri, {
+                fetch(direccionApi + "/subir/" + miUri, {
                     method: 'POST',
                     mode: 'no-cors',
                     body: form,
