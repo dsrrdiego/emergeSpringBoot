@@ -2,7 +2,7 @@ function artistas(){
     discosDiv.innerHTML="";
     
     fetch(direccionApi + "/album") //traer los albums.
-    fetch( + "/album") //traer los albums.
+    // fetch( + "/album") //traer los albums.
       .then(response => {
         if (!response.ok) {
           throw new Error('La solicitud no fue exitosa');
