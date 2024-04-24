@@ -25,31 +25,37 @@ public class EmergespringApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EmergespringApplication.class, args);
-		configureGlobalCORS();
+		// configureGlobalCORS();
 	}
 	
 
-	// @Bean
-	// public WebMvcConfigurer corsConfigurer() {
-	// 	return new WebMvcConfigurer() {
-	// 		@Override
-	// 		public void addCorsMappings(CorsRegistry registry) {
-	// 			registry.addMapping("/**").allowedOrigins("*");
-	// 		}
-	// 	};
-	// }
-	
-	public static void configureGlobalCORS() {
-        CorsRegistry registry = new CorsRegistry();
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                // Opcional: Configura otros parámetros de CORS según sea necesario
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+				.allowedOrigins("*")
+				.allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Content-Type", "Authorization")
                 .exposedHeaders("Authorization")
                 .allowCredentials(true)
                 .maxAge(3600);
-    }
+			}
+		};
+	}
+	
+	// public static void configureGlobalCORS() {
+    //     CorsRegistry registry = new CorsRegistry();
+    //     registry.addMapping("/**")
+    //             .allowedOrigins("*")
+    //             // Opcional: Configura otros parámetros de CORS según sea necesario
+    //             .allowedMethods("GET", "POST", "PUT", "DELETE")
+    //             .allowedHeaders("Content-Type", "Authorization")
+    //             .exposedHeaders("Authorization")
+    //             .allowCredentials(true)
+    //             .maxAge(3600);
+    // }
 
 
 }
