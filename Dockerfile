@@ -1,24 +1,13 @@
 # Usa una imagen de OpenJDK 17 como base
 FROM openjdk:17-jdk-slim
 
-# Establece el directorio de trabajo en /app
 WORKDIR /app
-
-
 
 COPY target/emergespring-0.0.1-SNAPSHOT.jar dock.jar
 COPY . /app
 
-ENV SPRING_PROFILES_ACTIVE=docker
-ENV DATABASE_PATH /emerge
-
-# Crea el directorio para almacenar los datos de la base de datos, si no existe
-RUN mkdir -p $DATABASE_PATH
-# Copia el archivo JAR de tu aplicación en el contenedor
-# Expone el puerto 8080 para que la aplicación esté disponible desde fuera del contenedor
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación Spring Boot cuando se inicie el contenedor
 CMD ["java", "-jar", "dock.jar"]
 
 
